@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use BotMan\BotMan\Messages\Attachments\Location;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use BotMan\BotMan\Messages\Incoming\IncomingMessage;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 use BotMan\Drivers\Telegram\Exceptions\TelegramException;
 
@@ -258,12 +259,13 @@ class TelegramDriver extends HttpDriver
                     $callback->get('data'),
                     $callback->get('from')['id'],
                     $callback->get('message')['chat']['id'],
-                    $callback->get('message')
+                    $callback->get('message'),
+                    $this->config->get('bot_id')
                 ),
             ];
         } elseif ($this->isValidLoginRequest()) {
             $messages = [
-                new IncomingMessage('', $this->queryParameters->get('id'), $this->queryParameters->get('id'), $this->queryParameters),
+                new IncomingMessage('', $this->queryParameters->get('id'), $this->queryParameters->get('id'), $this->queryParameters, $this->config->get('bot_id')),
             ];
         } else {
             $event = $this->event->all();
@@ -273,7 +275,8 @@ class TelegramDriver extends HttpDriver
                     $this->event->get('text'),
                     isset($event['from']['id']) ? $event['from']['id'] : null,
                     isset($event['chat']['id']) ? $event['chat']['id'] : null,
-                    $this->event
+                    $this->event,
+                    $this->config->get('bot_id')
                 ),
             ];
         }
@@ -316,12 +319,20 @@ class TelegramDriver extends HttpDriver
     private function convertQuestion(Question $question)
     {
         $replies = Collection::make($question->getButtons())->map(function ($button) {
-            return [
-                array_merge([
-                    'text' => (string) $button['text'],
-                    'callback_data' => (string) $button['value'],
-                ], $button['additional']),
-            ];
+            // single button
+            if(isset($button['text'])) {
+                $button = [$button];
+            }
+            // row of buttons
+            return Collection::make($button)->map(function ($button) {
+                if ($button instanceof Button) {
+                    $button = $button->toArray();
+                }
+                return array_merge([
+                        'text' => (string) $button['text'],
+                        'callback_data' => (string) $button['value'],
+                    ], $button['additional']);
+            })->toArray();
         });
 
         return $replies->toArray();
