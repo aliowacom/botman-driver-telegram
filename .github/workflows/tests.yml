@@ -3,11 +3,9 @@ name: 'Laravel Tests'
 on:
   push:
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
-  tests-on-php71:
+  tests-on-php8:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
