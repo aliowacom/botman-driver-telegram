@@ -15,15 +15,14 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=8.1",
         "botman/botman": "^2.0",
         "ext-curl": "*"
     },
     "require-dev": {
         "botman/studio-addons": "^1.0",
-        "illuminate/contracts": "^5.5",
-        "phpunit/phpunit": "^5.0",
-        "mockery/mockery": "^1.1"
+        "mockery/mockery": "^1.1",
+        "phpunit/phpunit": "^10.4"
     },
     "autoload": {
         "psr-4": {

@@ -2,11 +2,11 @@
 
 namespace Tests;
 
-use PHPUnit_Framework_TestCase;
 use BotMan\Drivers\Telegram\Extensions\Keyboard;
 use BotMan\Drivers\Telegram\Extensions\KeyboardButton;
+use PHPUnit\Framework\TestCase;
 
-class TelegramKeyboardTest extends PHPUnit_Framework_TestCase
+class TelegramKeyboardTest extends TestCase
 {
     /** @test */
     public function it_can_be_created()

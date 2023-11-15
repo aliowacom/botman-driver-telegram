@@ -4,14 +4,14 @@ namespace Tests;
 
 use Mockery as m;
 use BotMan\BotMan\Http\Curl;
-use PHPUnit_Framework_TestCase;
 use BotMan\BotMan\Messages\Attachments\Image;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use BotMan\Drivers\Telegram\TelegramPhotoDriver;
 use BotMan\Drivers\Telegram\Exceptions\TelegramAttachmentException;
+use PHPUnit\Framework\TestCase;
 
-class TelegramPhotoDriverTest extends PHPUnit_Framework_TestCase
+class TelegramPhotoDriverTest extends TestCase
 {
     private function getDriver($responseData, $htmlInterface = null)
     {

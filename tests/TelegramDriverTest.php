@@ -6,7 +6,6 @@ use BotMan\Drivers\Telegram\Exceptions\TelegramConnectionException;
 use Mockery as m;
 use BotMan\BotMan\Http\Curl;
 use BotMan\BotMan\Users\User;
-use PHPUnit_Framework_TestCase;
 use Illuminate\Support\Collection;
 use BotMan\Drivers\Telegram\TelegramDriver;
 use BotMan\BotMan\Messages\Attachments\File;
@@ -21,8 +20,9 @@ use BotMan\BotMan\Messages\Attachments\Location;
 use BotMan\BotMan\Messages\Attachments\Contact;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\Drivers\Telegram\Exceptions\TelegramException;
+use PHPUnit\Framework\TestCase;
 
-class TelegramDriverTest extends PHPUnit_Framework_TestCase
+class TelegramDriverTest extends TestCase
 {
     protected $telegramConfig = [
         'telegram' => [
@@ -39,7 +39,7 @@ class TelegramDriverTest extends PHPUnit_Framework_TestCase
         ],
     ];
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -1154,8 +1154,8 @@ class TelegramDriverTest extends PHPUnit_Framework_TestCase
         }
         $this->assertNotNull($throwable);
         $this->assertSame(TelegramConnectionException::class, get_class($throwable));
-        $this->assertNotContains($configurationWithHttpExceptions['telegram']['token'], $throwable->getMessage());
-        $this->assertContains('TELEGRAM-TOKEN-HIDDEN', $throwable->getMessage());
+        $this->assertStringNotContainsString($configurationWithHttpExceptions['telegram']['token'], $throwable->getMessage());
+        $this->assertStringContainsString('TELEGRAM-TOKEN-HIDDEN', $throwable->getMessage());
     }
 
     /** @test */

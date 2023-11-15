@@ -4,13 +4,13 @@ namespace Tests;
 
 use Mockery as m;
 use BotMan\BotMan\Http\Curl;
-use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use BotMan\BotMan\Messages\Attachments\Location;
 use BotMan\Drivers\Telegram\TelegramLocationDriver;
 use BotMan\BotMan\Messages\Incoming\IncomingMessage;
+use PHPUnit\Framework\TestCase;
 
-class TelegramLocationDriverTest extends PHPUnit_Framework_TestCase
+class TelegramLocationDriverTest extends TestCase
 {
     private function getDriver($responseData, $htmlInterface = null)
     {
